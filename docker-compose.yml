@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: student-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: student_user
+      MYSQL_PASSWORD: student_password
+      MYSQL_DATABASE: student_management
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
+  # Node.js Backend Server
+  server:
+    build: ./server
+    container_name: student-server
+    depends_on:
+      - db
+    ports:
+      - "5002:5002"
+    environment:
+      - DB_HOST=db
+      - DB_USER=student_user
+      - DB_PASSWORD=student_password
+      - DB_NAME=student_management
+      - DB_PORT=3306
+      - NODE_ENV=development
+      - PORT=5002
+    networks:
+      - app-network
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+
+  # React Frontend
+  client:
+    build: ./client
+    container_name: student-client
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5002
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
