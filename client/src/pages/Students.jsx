@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { getStudents } from '../api';
+import React, { useState, useEffect, useContext, createContext } from "react";
+import { Link } from "react-router-dom";
+import { getStudents } from "../api";
+import { MyContext } from "../contexts/MyContext";
 
 const Students = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const c = useContext(MyContext)
+
+  console.log(c)
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -14,7 +19,7 @@ const Students = () => {
         setStudents(data);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch students. Please try again later.');
+        setError("Failed to fetch students. Please try again later.");
         setLoading(false);
       }
     };
@@ -31,29 +36,40 @@ const Students = () => {
   }
 
   return (
-    <div className="students-page">
-      <h1>Students</h1>
-      <div className="card">
-        <div className="card-body">
-          <p>Total students: {students.length}</p>
-          <div className="list-group">
-            {students.map((student) => (
-              <div key={student.id} className="list-group-item">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <h3>{student.name}</h3>
-                    <p>{student.email}</p>
+    <>
+      <div className="students-page">
+        <h1>Students</h1>
+        <div className="card">
+          <div className="card-body">
+            <p>Total students: {students.length}</p>
+            <div className="list-group">
+              {students.map((student) => (
+                <div key={student.id} className="list-group-item">
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>
+                      <h3>{student.name}</h3>
+                      <p>{student.email}</p>
+                    </div>
+                    <Link
+                      to={`/students/${student.id}`}
+                      className="btn btn-primary"
+                    >
+                      View Details
+                    </Link>
                   </div>
-                  <Link to={`/students/${student.id}`} className="btn btn-primary">
-                    View Details
-                  </Link>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
