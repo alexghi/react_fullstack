@@ -27,7 +27,7 @@ npm install
 npm run dev
 ```
 
-The server will start on http://localhost:5000.
+The server will start on http://localhost:5002.
 
 ## Step 3: Start the Client
 
@@ -43,7 +43,7 @@ npm install
 npm start
 ```
 
-The client will start on http://localhost:3000 and automatically open in your browser.
+The client will start on http://localhost:5173 and automatically open in your browser.
 
 ## Configuration
 
@@ -66,7 +66,7 @@ The client connects to the server API using the URL specified in the `.env` file
 1. To stop the client and server, press `Ctrl+C` in their respective terminal windows.
 2. To stop the database container, press `Ctrl+C` in the terminal window where you started the container, or run:
    ```bash
-   docker-compose -f docker-compose-db-only.yml down
+   docker compose -f docker-compose-db-only.yml down
    ```
 
 ## Troubleshooting
@@ -142,8 +142,8 @@ student-management-app/
 
 1. **Accessing the Application** :
 
-* Frontend: http://localhost:3000
-* Backend API: http://localhost:5000/api
+* Frontend: http://localhost:5173
+* Backend API: http://localhost:5002/api
 
 ## API Endpoints
 
@@ -155,7 +155,6 @@ student-management-app/
 * **PUT /api/students/:studentId/homework/:homeworkId** : Update homework status for a student
 
 ## Development Notes
-
 
 * The React frontend is configured to proxy API requests to the backend during development
 * The database is initialized with sample data when the containers first start
